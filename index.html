@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отличник Медиа - Школьные новости Хабаровска</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Хедер -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <h2>Отличник <span class="logo-accent">Медиа</span></h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#main">Главная</a></li>
+                <li><a href="#about">О нас</a></li>
+                <li><a href="#articles">Статьи</a></li>
+                <li><a href="#team">Команда</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="nav-button">Войти</button>
+            </div>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Герой секция -->
+    <section id="main" class="hero">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <div class="hero-badge">Школьный медиа-проект • Хабаровск</div>
+            <h1 class="hero-title">
+                <span class="title-line">Отличник</span>
+                <span class="title-line accent">Медиа</span>
+            </h1>
+            <p class="hero-subtitle">Элегантное освещение школьной жизни: события, достижения, интервью и репортажи</p>
+            <div class="hero-buttons">
+                <button class="cta-button primary">Исследовать материалы</button>
+                <button class="cta-button secondary">
+                    <span>Узнать о проекте</span>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 0V16M16 8L0 8" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <div class="scroll-indicator"></div>
+        </div>
+    </section>
+
+    <!-- О нас -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">О проекте</h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">Элегантный подход к школьной журналистике</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p class="lead">«Отличник Медиа» — это платформа, где юные журналисты создают качественный контент с вниманием к деталям и стилю. Мы верим, что даже школьные новости могут быть поданы изысканно.</p>
+                    
+                    <div class="features">
+                        <div class="feature">
+                            <div class="feature-icon">❶</div>
+                            <div class="feature-content">
+                                <h3>Изящное изложение</h3>
+                                <p>Материалы, написанные с литературным вкусом и вниманием к языку</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">❷</div>
+                            <div class="feature-content">
+                                <h3>Визуальная эстетика</h3>
+                                <p>Фотографии и оформление, соответствующие высоким стандартам</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">❸</div>
+                            <div class="feature-content">
+                                <h3>Глубокие темы</h3>
+                                <p>Освещаем не только события, но и важные вопросы школьной жизни</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Последние статьи -->
+    <section id="articles" class="articles">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Избранные публикации</h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">Лучшие материалы от нашей редакции</p>
+            </div>
+            <div class="articles-grid" id="articles-grid">
+                <!-- Статьи будут добавляться через JS -->
+            </div>
+            <div class="section-footer">
+                <button class="elegant-button">
+                    <span>Все публикации</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M4 10H16M16 10L11 15M16 10L11 5" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Команда -->
+    <section id="team" class="team">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Наша команда</h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">Талантливые создатели контента</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <div class="avatar-placeholder">РЕ</div>
+                        <div class="member-overlay">
+                            <span>Главный редактор</span>
+                        </div>
+                    </div>
+                    <h3>Редакторы</h3>
+                    <p>Отвечают за стиль и качество контента</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <div class="avatar-placeholder">ЖУ</div>
+                        <div class="member-overlay">
+                            <span>Авторы</span>
+                        </div>
+                    </div>
+                    <h3>Журналисты</h3>
+                    <p>Создают текстовые материалы и берут интервью</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <div class="avatar-placeholder">ФО</div>
+                        <div class="member-overlay">
+                            <span>Визуал</span>
+                        </div>
+                    </div>
+                    <h3>Фотографы</h3>
+                    <p>Создают эстетичный визуальный контент</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <div class="avatar-placeholder">ДИ</div>
+                        <div class="member-overlay">
+                            <span>Дизайн</span>
+                        </div>
+                    </div>
+                    <h3>Дизайнеры</h3>
+                    <p>Оформление материалов и визуальная концепция</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Свяжитесь с нами</h2>
+                <div class="section-divider"></div>
+                <p class="section-subtitle">Есть идея для материала? Хотите присоединиться к команде?</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2Z" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M12 11.5C13.1046 11.5 14 10.6046 14 9.5C14 8.39543 13.1046 7.5 12 7.5C10.8954 7.5 10 8.39543 10 9.5C10 10.6046 10.8954 11.5 12 11.5Z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Адрес</h4>
+                            <p>Хабаровск, ул. Школьная, 1</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M22 6L12 13L2 6" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Email</h4>
+                            <p>otlichnik-media@school.ru</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M22 16.92V19.92C22 20.52 21.53 20.99 20.96 21.08C20.58 21.14 20.2 21.17 19.82 21.17C15.83 21.17 12.15 19.31 9.63 16.17C7.59 13.62 6.34 10.47 6.06 7.12C6.03 6.72 6.01 6.31 6.06 5.91C6.14 5.34 6.61 4.88 7.2 4.88H10.2C10.74 4.88 11.18 5.31 11.24 5.85C11.31 6.45 11.42 7.04 11.58 7.62C11.67 7.98 11.57 8.37 11.32 8.64L10.21 9.83C11.48 12.35 13.64 14.41 16.27 15.57L17.37 14.48C17.64 14.21 18.03 14.11 18.39 14.2C18.97 14.36 19.56 14.47 20.16 14.54C20.69 14.6 21.12 15.04 21.12 15.58V18.58" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Телефон</h4>
+                            <p>+7 (4212) 00-00-00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <h3>Напишите нам</h3>
+                    <form class="elegant-form">
+                        <div class="form-group">
+                            <input type="text" placeholder="Ваше имя" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Email" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Сообщение" rows="4" class="form-input"></textarea>
+                        </div>
+                        <button type="submit" class="elegant-button full-width">
+                            <span>Отправить сообщение</span>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M2 8H14M14 8L9 13M14 8L9 3" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-main">
+                    <div class="footer-logo">
+                        <h3>Отличник <span class="logo-accent">Медиа</span></h3>
+                        <p>Элегантная школьная журналистика в Хабаровске</p>
+                    </div>
+                    <div class="footer-social">
+                        <a href="#" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M18.5 2.5H1.5C1.22386 2.5 1 2.72386 1 3V17C1 17.2761 1.22386 17.5 1.5 17.5H18.5C18.7761 17.5 19 17.2761 19 17V3C19 2.72386 18.7761 2.5 18.5 2.5Z" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M1 5L10 10.5L19 5" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M13.5 6.5H16.5L12.5 11.5L17.5 17.5H13.5L10 13.5L6.5 17.5H2.5L7.5 11.5L3.5 6.5H6.5L9.5 10L13.5 6.5Z" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 18.5C14.6944 18.5 18.5 14.6944 18.5 10C18.5 5.30558 14.6944 1.5 10 1.5C5.30558 1.5 1.5 5.30558 1.5 10C1.5 14.6944 5.30558 18.5 10 18.5Z" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M13 7.5C13.5523 7.5 14 7.05228 14 6.5C14 5.94772 13.5523 5.5 13 5.5C12.4477 5.5 12 5.94772 12 6.5C12 7.05228 12.4477 7.5 13 7.5Z" fill="currentColor"/>
+                                <path d="M7.5 10C7.5 11.5 9.5 12.5 9.5 12.5C9.5 12.5 11.5 11.5 11.5 10" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>Навигация</h4>
+                        <a href="#main">Главная</a>
+                        <a href="#about">О нас</a>
+                        <a href="#articles">Статьи</a>
+                        <a href="#team">Команда</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Ресурсы</h4>
+                        <a href="#">Архив</a>
+                        <a href="#">Рубрики</a>
+                        <a href="#">Авторы</a>
+                        <a href="#">Контакты</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Отличник Медиа. Школа Хабаровска. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
