@@ -1,0 +1,2133 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | Отличник Media</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+    
+    <style>
+        /* ===== CSS VARIABLES - DARK THEME ===== */
+        :root {
+            /* Colors - Black, Gray, White, Red */
+            --primary: #dc2626;
+            --primary-dark: #b91c1c;
+            --primary-light: #ef4444;
+            --secondary: #6b7280;
+            --accent: #dc2626;
+            --background: #000000;
+            --surface: #111111;
+            --surface-light: #1a1a1a;
+            --surface-lighter: #262626;
+            --text-primary: #ffffff;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --text-dark: #6b7280;
+            --border: #374151;
+            --border-light: #4b5563;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+
+            /* Typography */
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-size-4xl: 2.25rem;
+
+            /* Spacing */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+
+            /* Border radius */
+            --radius-sm: 0.25rem;
+            --radius: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.7), 0 1px 2px -1px rgb(0 0 0 / 0.7);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.8), 0 2px 4px -2px rgb(0 0 0 / 0.8);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.8), 0 4px 6px -4px rgb(0 0 0 / 0.8);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.9), 0 8px 10px -6px rgb(0 0 0 / 0.9);
+            --shadow-red: 0 10px 15px -3px rgb(220 38 38 / 0.3), 0 4px 6px -4px rgb(220 38 38 / 0.3);
+
+            /* Transitions */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ===== RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== ADMIN LAYOUT ===== */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            width: 260px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .admin-logo {
+            padding: var(--space-6) var(--space-4);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .admin-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-lg);
+            color: white;
+        }
+
+        .admin-logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .admin-logo-primary {
+            font-weight: 800;
+            font-size: var(--font-size-lg);
+            color: var(--text-primary);
+        }
+
+        .admin-logo-secondary {
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+            color: var(--primary);
+            margin-top: -2px;
+        }
+
+        .admin-nav {
+            flex: 1;
+            padding: var(--space-4) 0;
+        }
+
+        .admin-nav-section {
+            margin-bottom: var(--space-6);
+        }
+
+        .admin-nav-title {
+            font-size: var(--font-size-sm);
+            color: var(--text-muted);
+            font-weight: 600;
+            padding: 0 var(--space-4);
+            margin-bottom: var(--space-2);
+        }
+
+        .admin-nav-links {
+            list-style: none;
+        }
+
+        .admin-nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3) var(--space-4);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .admin-nav-link:hover,
+        .admin-nav-link.active {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--text-primary);
+            border-left-color: var(--primary);
+        }
+
+        .admin-nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .admin-user {
+            padding: var(--space-4);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .admin-user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .admin-user-info {
+            flex: 1;
+        }
+
+        .admin-user-name {
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+        }
+
+        .admin-user-role {
+            font-size: var(--font-size-xs);
+            color: var(--text-muted);
+        }
+
+        .admin-logout {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: var(--space-2);
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .admin-logout:hover {
+            color: var(--primary);
+            background: rgba(220, 38, 38, 0.1);
+        }
+
+        /* Main Content */
+        .admin-main {
+            flex: 1;
+            margin-left: 260px;
+            padding: var(--space-6);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-6);
+            padding-bottom: var(--space-4);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .admin-title {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: var(--space-3);
+        }
+
+        /* Cards */
+        .admin-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .admin-card-header {
+            padding: var(--space-4);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-card-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+        }
+
+        .admin-card-body {
+            padding: var(--space-4);
+        }
+
+        .admin-card-footer {
+            padding: var(--space-4);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--space-3);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius);
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            cursor: pointer;
+            font-size: var(--font-size-sm);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border-color: var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-light);
+            border-color: var(--primary);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .btn-success:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: white;
+            border-color: var(--error);
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-sm {
+            padding: var(--space-1) var(--space-3);
+            font-size: var(--font-size-xs);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: var(--space-4);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--space-2);
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: var(--space-3) var(--space-4);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            font-size: var(--font-size-base);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(220, 38, 38, 0.05);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: var(--space-8);
+        }
+
+        /* Tables */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: var(--space-3) var(--space-4);
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .admin-table th {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+            background: var(--surface-light);
+        }
+
+        .admin-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Tabs */
+        .admin-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: var(--space-4);
+        }
+
+        .admin-tab {
+            padding: var(--space-3) var(--space-4);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+        }
+
+        .admin-tab:hover,
+        .admin-tab.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Stats */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            padding: var(--space-4);
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-xl);
+        }
+
+        .stat-icon.primary {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--primary);
+        }
+
+        .stat-icon.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .stat-icon.warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .stat-icon.secondary {
+            background: rgba(107, 114, 128, 0.1);
+            color: var(--secondary);
+        }
+
+        .stat-content {
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: var(--space-1);
+        }
+
+        .stat-label {
+            font-size: var(--font-size-sm);
+            color: var(--text-muted);
+        }
+
+        /* Modals */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-4);
+            opacity: 0;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 600px;
+            width: 100%;
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            z-index: 2;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: var(--space-4);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: var(--space-1);
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body {
+            padding: var(--space-4);
+        }
+
+        .modal-footer {
+            padding: var(--space-4);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--space-3);
+        }
+
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: var(--space-6);
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+        }
+
+        .file-upload-icon {
+            font-size: 2rem;
+            color: var(--text-muted);
+            margin-bottom: var(--space-3);
+        }
+
+        .file-upload-text {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-3);
+        }
+
+        .file-upload-hint {
+            font-size: var(--font-size-sm);
+            color: var(--text-muted);
+        }
+
+        /* Media Grid */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: var(--space-4);
+            margin-top: var(--space-4);
+        }
+
+        .media-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            cursor: pointer;
+        }
+
+        .media-item.selected {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .media-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .media-actions {
+            position: absolute;
+            top: var(--space-2);
+            right: var(--space-2);
+            display: flex;
+            gap: var(--space-1);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .media-item:hover .media-actions {
+            opacity: 1;
+        }
+
+        .media-action {
+            width: 28px;
+            height: 28px;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: var(--font-size-sm);
+            transition: var(--transition);
+        }
+
+        .media-action:hover {
+            background: var(--primary);
+        }
+
+        /* Alerts */
+        .alert {
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius);
+            margin-bottom: var(--space-4);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.published {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .status-badge.draft {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        /* Utilities */
+        .hidden {
+            display: none;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .mb-4 {
+            margin-bottom: var(--space-4);
+        }
+
+        .mt-4 {
+            margin-top: var(--space-4);
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .admin-sidebar {
+                width: 220px;
+            }
+            
+            .admin-main {
+                margin-left: 220px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .admin-main {
+                margin-left: 0;
+            }
+            
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: var(--font-size-xl);
+            cursor: pointer;
+            padding: var(--space-2);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-black text-white antialiased">
+    <!-- ===== ADMIN AUTH CHECK ===== -->
+    <script>
+        // Упрощенная проверка авторизации - только проверяем флаг без времени
+        function checkAdminAuth() {
+            const isAuthenticated = localStorage.getItem('admin_authenticated') === 'true';
+            
+            if (!isAuthenticated) {
+                window.location.href = 'index.html';
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Check authentication on load
+        if (!checkAdminAuth()) {
+            throw new Error('Not authenticated');
+        }
+    </script>
+
+    <!-- Admin Layout -->
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="admin-logo">
+                <div class="admin-logo-icon">
+                    <i class="fas fa-film"></i>
+                </div>
+                <div class="admin-logo-text">
+                    <span class="admin-logo-primary">Отличник</span>
+                    <span class="admin-logo-secondary">Admin</span>
+                </div>
+            </div>
+
+            <nav class="admin-nav">
+                <div class="admin-nav-section">
+                    <h3 class="admin-nav-title">Главная</h3>
+                    <ul class="admin-nav-links">
+                        <li>
+                            <a href="#" class="admin-nav-link active" data-tab="dashboard">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Панель управления</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="admin-nav-section">
+                    <h3 class="admin-nav-title">Контент</h3>
+                    <ul class="admin-nav-links">
+                        <li>
+                            <a href="#" class="admin-nav-link" data-tab="posts">
+                                <i class="fas fa-newspaper"></i>
+                                <span>Публикации</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="admin-nav-link" data-tab="media">
+                                <i class="fas fa-images"></i>
+                                <span>Медиа</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="admin-nav-section">
+                    <h3 class="admin-nav-title">Настройки</h3>
+                    <ul class="admin-nav-links">
+                        <li>
+                            <a href="#" class="admin-nav-link" data-tab="settings">
+                                <i class="fas fa-cog"></i>
+                                <span>Настройки сайта</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="admin-user">
+                <div class="admin-user-avatar">A</div>
+                <div class="admin-user-info">
+                    <div class="admin-user-name">Администратор</div>
+                    <div class="admin-user-role">Владелец</div>
+                </div>
+                <button class="admin-logout" id="admin-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="admin-header">
+                <div>
+                    <button class="mobile-menu-btn" id="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="admin-title" id="page-title">Панель управления</h1>
+                </div>
+                <div class="admin-actions">
+                    <a href="index.html" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-external-link-alt"></i>
+                        Посмотреть сайт
+                    </a>
+                </div>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div class="admin-tab-content active" id="dashboard-tab">
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="stats-posts">0</div>
+                            <div class="stat-label">Публикаций</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="stats-media">0</div>
+                            <div class="stat-label">Медиафайлов</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="stats-views">1,254</div>
+                            <div class="stat-label">Просмотров</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon secondary">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="stats-users">5</div>
+                            <div class="stat-label">Участников</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">Последние публикации</h2>
+                        <button class="btn btn-primary btn-sm" id="add-post-btn">
+                            <i class="fas fa-plus"></i>
+                            Добавить
+                        </button>
+                    </div>
+                    <div class="admin-card-body">
+                        <div id="recent-posts-container">
+                            <!-- Recent posts will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Posts Tab -->
+            <div class="admin-tab-content" id="posts-tab">
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">Управление публикациями</h2>
+                        <button class="btn btn-primary btn-sm" id="create-post-btn">
+                            <i class="fas fa-plus"></i>
+                            Новая публикация
+                        </button>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="admin-tabs">
+                            <a href="#" class="admin-tab active" data-post-tab="published">Опубликованные</a>
+                            <a href="#" class="admin-tab" data-post-tab="drafts">Черновики</a>
+                        </div>
+
+                        <div class="admin-table-container">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Заголовок</th>
+                                        <th>Дата</th>
+                                        <th>Статус</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="posts-table-body">
+                                    <!-- Posts will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Media Tab -->
+            <div class="admin-tab-content" id="media-tab">
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">Медиабиблиотека</h2>
+                        <button class="btn btn-primary btn-sm" id="upload-media-btn">
+                            <i class="fas fa-upload"></i>
+                            Загрузить
+                        </button>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="file-upload" id="file-upload-area">
+                            <div class="file-upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="file-upload-text">
+                                Перетащите файлы сюда или нажмите для загрузки
+                            </div>
+                            <div class="file-upload-hint">
+                                PNG, JPG, GIF до 10MB
+                            </div>
+                            <input type="file" id="file-input" multiple accept="image/*" class="hidden">
+                        </div>
+
+                        <div class="media-grid" id="media-grid">
+                            <!-- Media items will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="admin-tab-content" id="settings-tab">
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">Настройки сайта</h2>
+                    </div>
+                    <div class="admin-card-body">
+                        <form id="site-settings-form">
+                            <div class="form-group">
+                                <label for="site-title" class="form-label">Название сайта</label>
+                                <input type="text" id="site-title" class="form-control" value="Отличник Media">
+                            </div>
+                            <div class="form-group">
+                                <label for="site-description" class="form-label">Описание сайта</label>
+                                <textarea id="site-description" class="form-control">Медиа-проект учеников частной школы. Создаем контент, снимаем видео, ведем школьные социальные сети</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="primary-color" class="form-label">Основной цвет</label>
+                                <input type="color" id="primary-color" class="form-control" value="#dc2626">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-email" class="form-label">Контактный Telegram</label>
+                                <input type="text" id="contact-telegram" class="form-control" value="@otlichnikmedia_bot">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="admin-card-footer">
+                        <button type="button" class="btn btn-secondary">Отмена</button>
+                        <button type="button" class="btn btn-primary" id="save-settings-btn">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Post Editor Modal -->
+    <div class="modal hidden" id="post-editor-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="post-modal-title">Новая публикация</h3>
+                <button class="modal-close" id="close-post-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="post-form">
+                    <input type="hidden" id="post-id">
+                    <div class="form-group">
+                        <label for="post-title" class="form-label">Заголовок</label>
+                        <input type="text" id="post-title" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="post-content" class="form-label">Содержание</label>
+                        <textarea id="post-content" class="form-control" rows="10" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="post-status" class="form-label">Статус</label>
+                        <select id="post-status" class="form-control form-select">
+                            <option value="published">Опубликовано</option>
+                            <option value="draft">Черновик</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Изображения</label>
+                        <div class="media-grid" id="post-media-grid">
+                            <!-- Media for post will be loaded here -->
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm mt-4" id="add-media-to-post">
+                            <i class="fas fa-plus"></i>
+                            Добавить медиа
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-post-btn">Отмена</button>
+                <button type="button" class="btn btn-primary" id="save-post-btn">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Media Selector Modal -->
+    <div class="modal hidden" id="media-selector-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Выберите медиа</h3>
+                <button class="modal-close" id="close-media-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="media-grid" id="media-selector-grid">
+                    <!-- Media for selection will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-media-select">Отмена</button>
+                <button type="button" class="btn btn-primary" id="confirm-media-select">Выбрать</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // ===== MEDIA DATABASE =====
+        class MediaDatabase {
+            constructor() {
+                this.storageKey = 'otlichnik_media_database';
+                this.init();
+            }
+
+            init() {
+                if (!localStorage.getItem(this.storageKey)) {
+                    const initialData = {
+                        posts: [
+                            {
+                                id: '1',
+                                title: 'Запуск нового сайта Отличник Media',
+                                content: 'Мы рады представить вам наш новый сайт! Теперь все наши проекты и новости будут доступны здесь.',
+                                images: [],
+                                status: 'published',
+                                createdAt: new Date().toISOString()
+                            },
+                            {
+                                id: '2', 
+                                title: 'Фотосессия для школьного года',
+                                content: 'Кирилл Тютюков провел потрясающую фотосессию для оформления школьного альбома.',
+                                images: [],
+                                status: 'published',
+                                createdAt: new Date(Date.now() - 86400000).toISOString()
+                            }
+                        ],
+                        drafts: [],
+                        media: [],
+                        settings: {
+                            siteTitle: 'Отличник Media',
+                            siteDescription: 'Медиа-проект учеников частной школы. Создаем контент, снимаем видео, ведем школьные социальные сети',
+                            primaryColor: '#dc2626',
+                            contactTelegram: '@otlichnikmedia_bot'
+                        }
+                    };
+                    this.saveData(initialData);
+                }
+            }
+
+            getData() {
+                return JSON.parse(localStorage.getItem(this.storageKey)) || {};
+            }
+
+            saveData(data) {
+                localStorage.setItem(this.storageKey, JSON.stringify(data));
+            }
+
+            // Posts management
+            async getPosts() {
+                const data = this.getData();
+                return data.posts || [];
+            }
+
+            async getDrafts() {
+                const data = this.getData();
+                return data.drafts || [];
+            }
+
+            async savePost(post) {
+                const data = this.getData();
+                
+                if (!post.id) {
+                    post.id = Date.now().toString();
+                    post.createdAt = new Date().toISOString();
+                    data.posts.unshift(post);
+                } else {
+                    const index = data.posts.findIndex(p => p.id === post.id);
+                    if (index !== -1) {
+                        data.posts[index] = { ...data.posts[index], ...post };
+                    }
+                }
+
+                this.saveData(data);
+                return post;
+            }
+
+            async deletePost(postId) {
+                const data = this.getData();
+                data.posts = data.posts.filter(p => p.id !== postId);
+                this.saveData(data);
+            }
+
+            // Media management
+            async getMedia() {
+                const data = this.getData();
+                return data.media || [];
+            }
+
+            async saveMedia(file, fileName) {
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const mediaItem = {
+                            id: Date.now().toString(),
+                            name: fileName,
+                            url: e.target.result,
+                            type: file.type,
+                            uploadedAt: new Date().toISOString()
+                        };
+
+                        const data = this.getData();
+                        data.media.unshift(mediaItem);
+                        this.saveData(data);
+
+                        resolve(mediaItem);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            async deleteMedia(mediaId) {
+                const data = this.getData();
+                data.media = data.media.filter(m => m.id !== mediaId);
+                this.saveData(data);
+            }
+
+            // Settings management
+            async getSettings() {
+                const data = this.getData();
+                return data.settings || {};
+            }
+
+            async saveSettings(settings) {
+                const data = this.getData();
+                data.settings = { ...data.settings, ...settings };
+                this.saveData(data);
+            }
+        }
+
+        // ===== ADMIN PANEL APPLICATION =====
+        class AdminPanel {
+            constructor() {
+                this.db = new MediaDatabase();
+                this.currentTab = 'dashboard';
+                this.currentPostTab = 'published';
+                this.selectedMedia = [];
+                this.currentEditingPost = null;
+                
+                this.init();
+            }
+
+            async init() {
+                // Initialize UI
+                this.initNavigation();
+                this.initEventListeners();
+                this.initModals();
+                
+                // Load initial data
+                await this.loadDashboard();
+                await this.loadPosts();
+                await this.loadMedia();
+                await this.loadSettings();
+                
+                console.log('Admin panel initialized successfully');
+            }
+
+            initNavigation() {
+                // Tab navigation
+                const navLinks = document.querySelectorAll('.admin-nav-link');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        
+                        // Remove active class from all links
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        
+                        // Add active class to clicked link
+                        link.classList.add('active');
+                        
+                        // Show corresponding tab
+                        const tab = link.dataset.tab;
+                        this.showTab(tab);
+                    });
+                });
+
+                // Post tab navigation
+                const postTabs = document.querySelectorAll('[data-post-tab]');
+                postTabs.forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        
+                        // Remove active class from all tabs
+                        postTabs.forEach(t => t.classList.remove('active'));
+                        
+                        // Add active class to clicked tab
+                        tab.classList.add('active');
+                        
+                        // Load posts for this tab
+                        this.currentPostTab = tab.dataset.postTab;
+                        this.loadPosts();
+                    });
+                });
+
+                // Mobile menu
+                const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+                const sidebar = document.getElementById('admin-sidebar');
+                
+                if (mobileMenuBtn && sidebar) {
+                    mobileMenuBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        sidebar.classList.toggle('active');
+                    });
+                    
+                    // Close menu when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                            sidebar.classList.remove('active');
+                        }
+                    });
+                }
+
+                // Logout - fixed to only log out on explicit action
+                const logoutBtn = document.getElementById('admin-logout');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (confirm('Вы уверены, что хотите выйти из админ-панели?')) {
+                            localStorage.removeItem('admin_authenticated');
+                            localStorage.removeItem('admin_login_time');
+                            window.location.href = 'index.html';
+                        }
+                    });
+                }
+            }
+
+            initEventListeners() {
+                // Post management
+                const createPostBtn = document.getElementById('create-post-btn');
+                const addPostBtn = document.getElementById('add-post-btn');
+                
+                if (createPostBtn) {
+                    createPostBtn.addEventListener('click', () => {
+                        this.openPostEditor();
+                    });
+                }
+                
+                if (addPostBtn) {
+                    addPostBtn.addEventListener('click', () => {
+                        this.openPostEditor();
+                    });
+                }
+
+                // Media upload
+                const uploadArea = document.getElementById('file-upload-area');
+                const fileInput = document.getElementById('file-input');
+                
+                if (uploadArea && fileInput) {
+                    uploadArea.addEventListener('click', () => {
+                        fileInput.click();
+                    });
+                    
+                    uploadArea.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        uploadArea.style.borderColor = 'var(--primary)';
+                        uploadArea.style.backgroundColor = 'rgba(220, 38, 38, 0.05)';
+                    });
+                    
+                    uploadArea.addEventListener('dragleave', () => {
+                        uploadArea.style.borderColor = 'var(--border)';
+                        uploadArea.style.backgroundColor = 'transparent';
+                    });
+                    
+                    uploadArea.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        uploadArea.style.borderColor = 'var(--border)';
+                        uploadArea.style.backgroundColor = 'transparent';
+                        
+                        const files = e.dataTransfer.files;
+                        this.handleFileUpload(files);
+                    });
+                    
+                    fileInput.addEventListener('change', (e) => {
+                        this.handleFileUpload(e.target.files);
+                        e.target.value = '';
+                    });
+                }
+
+                // Settings
+                const saveSettingsBtn = document.getElementById('save-settings-btn');
+                if (saveSettingsBtn) {
+                    saveSettingsBtn.addEventListener('click', () => {
+                        this.saveSettings();
+                    });
+                }
+            }
+
+            initModals() {
+                // Post editor modal
+                const postModal = document.getElementById('post-editor-modal');
+                const closePostModal = document.getElementById('close-post-modal');
+                const cancelPostBtn = document.getElementById('cancel-post-btn');
+                const savePostBtn = document.getElementById('save-post-btn');
+                
+                if (closePostModal) {
+                    closePostModal.addEventListener('click', () => {
+                        this.closePostEditor();
+                    });
+                }
+                
+                if (cancelPostBtn) {
+                    cancelPostBtn.addEventListener('click', () => {
+                        this.closePostEditor();
+                    });
+                }
+                
+                if (savePostBtn) {
+                    savePostBtn.addEventListener('click', () => {
+                        this.savePost();
+                    });
+                }
+                
+                // Close modal when clicking outside
+                if (postModal) {
+                    postModal.addEventListener('click', (e) => {
+                        if (e.target === postModal) {
+                            this.closePostEditor();
+                        }
+                    });
+                }
+
+                // Media selector modal
+                const mediaModal = document.getElementById('media-selector-modal');
+                const closeMediaModal = document.getElementById('close-media-modal');
+                const cancelMediaSelect = document.getElementById('cancel-media-select');
+                const confirmMediaSelect = document.getElementById('confirm-media-select');
+                const addMediaToPost = document.getElementById('add-media-to-post');
+                
+                if (closeMediaModal) {
+                    closeMediaModal.addEventListener('click', () => {
+                        this.closeMediaSelector();
+                    });
+                }
+                
+                if (cancelMediaSelect) {
+                    cancelMediaSelect.addEventListener('click', () => {
+                        this.closeMediaSelector();
+                    });
+                }
+                
+                if (confirmMediaSelect) {
+                    confirmMediaSelect.addEventListener('click', () => {
+                        this.confirmMediaSelection();
+                    });
+                }
+                
+                if (addMediaToPost) {
+                    addMediaToPost.addEventListener('click', () => {
+                        this.openMediaSelector();
+                    });
+                }
+                
+                // Close media modal when clicking outside
+                if (mediaModal) {
+                    mediaModal.addEventListener('click', (e) => {
+                        if (e.target === mediaModal) {
+                            this.closeMediaSelector();
+                        }
+                    });
+                }
+            }
+
+            showTab(tabName) {
+                // Hide all tabs
+                const tabs = document.querySelectorAll('.admin-tab-content');
+                tabs.forEach(tab => tab.classList.remove('active'));
+                
+                // Show selected tab
+                const selectedTab = document.getElementById(`${tabName}-tab`);
+                if (selectedTab) {
+                    selectedTab.classList.add('active');
+                }
+                
+                // Update page title
+                const pageTitle = document.getElementById('page-title');
+                if (pageTitle) {
+                    const titles = {
+                        dashboard: 'Панель управления',
+                        posts: 'Публикации',
+                        media: 'Медиа',
+                        settings: 'Настройки'
+                    };
+                    pageTitle.textContent = titles[tabName] || 'Панель управления';
+                }
+                
+                this.currentTab = tabName;
+                
+                // Load tab-specific data
+                if (tabName === 'dashboard') {
+                    this.loadDashboard();
+                } else if (tabName === 'posts') {
+                    this.loadPosts();
+                } else if (tabName === 'media') {
+                    this.loadMedia();
+                } else if (tabName === 'settings') {
+                    this.loadSettings();
+                }
+            }
+
+            async loadDashboard() {
+                try {
+                    const posts = await this.db.getPosts();
+                    const media = await this.db.getMedia();
+                    
+                    // Update stats
+                    const postsCount = document.getElementById('stats-posts');
+                    const mediaCount = document.getElementById('stats-media');
+                    
+                    if (postsCount) postsCount.textContent = posts.length;
+                    if (mediaCount) mediaCount.textContent = media.length;
+                    
+                    // Load recent posts
+                    this.loadRecentPosts(posts.slice(0, 5));
+                } catch (error) {
+                    console.error('Error loading dashboard:', error);
+                    this.showAlert('Ошибка загрузки данных', 'error');
+                }
+            }
+
+            loadRecentPosts(posts) {
+                const container = document.getElementById('recent-posts-container');
+                if (!container) return;
+                
+                if (posts.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center" style="padding: var(--space-8); color: var(--text-muted);">
+                            <i class="fas fa-newspaper" style="font-size: 3rem; margin-bottom: var(--space-4);"></i>
+                            <p>Пока нет публикаций</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = `
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Заголовок</th>
+                                <th>Дата</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${posts.map(post => `
+                                <tr>
+                                    <td>${post.title}</td>
+                                    <td>${new Date(post.createdAt).toLocaleDateString('ru-RU')}</td>
+                                    <td>
+                                        <button class="btn btn-secondary btn-sm" data-action="edit" data-id="${post.id}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" data-action="delete" data-id="${post.id}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+                
+                // Add event listeners to action buttons
+                container.querySelectorAll('[data-action="edit"]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const postId = btn.dataset.id;
+                        this.editPost(postId);
+                    });
+                });
+                
+                container.querySelectorAll('[data-action="delete"]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const postId = btn.dataset.id;
+                        this.deletePost(postId);
+                    });
+                });
+            }
+
+            async loadPosts() {
+                try {
+                    let posts = [];
+                    
+                    if (this.currentPostTab === 'published') {
+                        posts = await this.db.getPosts();
+                    } else if (this.currentPostTab === 'drafts') {
+                        posts = await this.db.getDrafts();
+                    }
+                    
+                    this.renderPostsTable(posts);
+                } catch (error) {
+                    console.error('Error loading posts:', error);
+                    this.showAlert('Ошибка загрузки публикаций', 'error');
+                }
+            }
+
+            renderPostsTable(posts) {
+                const tableBody = document.getElementById('posts-table-body');
+                if (!tableBody) return;
+                
+                if (posts.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="text-center" style="padding: var(--space-8); color: var(--text-muted);">
+                                <i class="fas fa-newspaper" style="font-size: 2rem; margin-bottom: var(--space-2); display: block;"></i>
+                                <p>Пока нет публикаций</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                tableBody.innerHTML = posts.map(post => `
+                    <tr>
+                        <td>${post.title}</td>
+                        <td>${new Date(post.createdAt).toLocaleDateString('ru-RU')}</td>
+                        <td>
+                            <span class="status-badge ${post.status === 'published' ? 'published' : 'draft'}">
+                                ${post.status === 'published' ? 'Опубликовано' : 'Черновик'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" data-action="edit" data-id="${post.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm" data-action="delete" data-id="${post.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+                
+                // Add event listeners to action buttons
+                tableBody.querySelectorAll('[data-action="edit"]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const postId = btn.dataset.id;
+                        this.editPost(postId);
+                    });
+                });
+                
+                tableBody.querySelectorAll('[data-action="delete"]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const postId = btn.dataset.id;
+                        this.deletePost(postId);
+                    });
+                });
+            }
+
+            async loadMedia() {
+                try {
+                    const media = await this.db.getMedia();
+                    this.renderMediaGrid(media);
+                } catch (error) {
+                    console.error('Error loading media:', error);
+                    this.showAlert('Ошибка загрузки медиа', 'error');
+                }
+            }
+
+            renderMediaGrid(media) {
+                const grid = document.getElementById('media-grid');
+                if (!grid) return;
+                
+                if (media.length === 0) {
+                    grid.innerHTML = `
+                        <div class="text-center w-full" style="grid-column: 1 / -1; padding: var(--space-8); color: var(--text-muted);">
+                            <i class="fas fa-images" style="font-size: 3rem; margin-bottom: var(--space-4);"></i>
+                            <p>Медиабиблиотека пуста</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                grid.innerHTML = media.map(item => `
+                    <div class="media-item" data-id="${item.id}">
+                        <img src="${item.url}" alt="${item.name}">
+                        <div class="media-actions">
+                            <button class="media-action" data-action="delete" data-id="${item.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Add event listeners to delete buttons
+                grid.querySelectorAll('[data-action="delete"]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const mediaId = btn.dataset.id;
+                        this.deleteMedia(mediaId);
+                    });
+                });
+            }
+
+            async loadSettings() {
+                try {
+                    const settings = await this.db.getSettings();
+                    
+                    // Populate form fields
+                    const siteTitle = document.getElementById('site-title');
+                    const siteDescription = document.getElementById('site-description');
+                    const primaryColor = document.getElementById('primary-color');
+                    const contactTelegram = document.getElementById('contact-telegram');
+                    
+                    if (siteTitle) siteTitle.value = settings.siteTitle || '';
+                    if (siteDescription) siteDescription.value = settings.siteDescription || '';
+                    if (primaryColor) primaryColor.value = settings.primaryColor || '#dc2626';
+                    if (contactTelegram) contactTelegram.value = settings.contactTelegram || '';
+                } catch (error) {
+                    console.error('Error loading settings:', error);
+                }
+            }
+
+            async saveSettings() {
+                try {
+                    const siteTitle = document.getElementById('site-title').value;
+                    const siteDescription = document.getElementById('site-description').value;
+                    const primaryColor = document.getElementById('primary-color').value;
+                    const contactTelegram = document.getElementById('contact-telegram').value;
+                    
+                    const settings = {
+                        siteTitle,
+                        siteDescription,
+                        primaryColor,
+                        contactTelegram
+                    };
+                    
+                    await this.db.saveSettings(settings);
+                    this.showAlert('Настройки успешно сохранены', 'success');
+                } catch (error) {
+                    console.error('Error saving settings:', error);
+                    this.showAlert('Ошибка сохранения настроек', 'error');
+                }
+            }
+
+            openPostEditor(postId = null) {
+                const modal = document.getElementById('post-editor-modal');
+                const modalTitle = document.getElementById('post-modal-title');
+                
+                if (postId) {
+                    // Editing existing post
+                    modalTitle.textContent = 'Редактировать публикацию';
+                    this.currentEditingPost = postId;
+                    this.loadPostForEditing(postId);
+                } else {
+                    // Creating new post
+                    modalTitle.textContent = 'Новая публикация';
+                    this.currentEditingPost = null;
+                    this.resetPostForm();
+                }
+                
+                modal.classList.remove('hidden');
+            }
+
+            closePostEditor() {
+                const modal = document.getElementById('post-editor-modal');
+                modal.classList.add('hidden');
+                this.currentEditingPost = null;
+                this.resetPostForm();
+            }
+
+            resetPostForm() {
+                const form = document.getElementById('post-form');
+                if (form) form.reset();
+                
+                const mediaGrid = document.getElementById('post-media-grid');
+                if (mediaGrid) mediaGrid.innerHTML = '';
+                
+                this.selectedMedia = [];
+            }
+
+            async loadPostForEditing(postId) {
+                try {
+                    const posts = await this.db.getPosts();
+                    const post = posts.find(p => p.id === postId);
+                    
+                    if (post) {
+                        document.getElementById('post-id').value = post.id;
+                        document.getElementById('post-title').value = post.title;
+                        document.getElementById('post-content').value = post.content;
+                        document.getElementById('post-status').value = post.status;
+                        
+                        // Load post media
+                        this.selectedMedia = post.images || [];
+                        this.renderPostMediaGrid();
+                    }
+                } catch (error) {
+                    console.error('Error loading post for editing:', error);
+                    this.showAlert('Ошибка загрузки публикации', 'error');
+                }
+            }
+
+            async savePost() {
+                try {
+                    const postId = document.getElementById('post-id').value;
+                    const title = document.getElementById('post-title').value;
+                    const content = document.getElementById('post-content').value;
+                    const status = document.getElementById('post-status').value;
+                    
+                    if (!title || !content) {
+                        this.showAlert('Заполните все обязательные поля', 'error');
+                        return;
+                    }
+                    
+                    const post = {
+                        id: postId || undefined,
+                        title,
+                        content,
+                        status,
+                        images: this.selectedMedia,
+                        createdAt: postId ? undefined : new Date().toISOString()
+                    };
+                    
+                    await this.db.savePost(post);
+                    this.closePostEditor();
+                    this.showAlert('Публикация успешно сохранена', 'success');
+                    
+                    // Reload posts
+                    this.loadPosts();
+                    this.loadDashboard();
+                } catch (error) {
+                    console.error('Error saving post:', error);
+                    this.showAlert('Ошибка сохранения публикации', 'error');
+                }
+            }
+
+            async deletePost(postId) {
+                if (!confirm('Вы уверены, что хотите удалить эту публикацию?')) {
+                    return;
+                }
+                
+                try {
+                    await this.db.deletePost(postId);
+                    this.showAlert('Публикация успешно удалена', 'success');
+                    
+                    // Reload posts
+                    this.loadPosts();
+                    this.loadDashboard();
+                } catch (error) {
+                    console.error('Error deleting post:', error);
+                    this.showAlert('Ошибка удаления публикации', 'error');
+                }
+            }
+
+            async editPost(postId) {
+                this.openPostEditor(postId);
+            }
+
+            async handleFileUpload(files) {
+                if (!files || files.length === 0) return;
+                
+                try {
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i];
+                        
+                        // Check file type
+                        if (!file.type.startsWith('image/')) {
+                            this.showAlert('Можно загружать только изображения', 'error');
+                            continue;
+                        }
+                        
+                        // Check file size (10MB limit)
+                        if (file.size > 10 * 1024 * 1024) {
+                            this.showAlert('Размер файла не должен превышать 10MB', 'error');
+                            continue;
+                        }
+                        
+                        await this.db.saveMedia(file, file.name);
+                    }
+                    
+                    this.showAlert('Файлы успешно загружены', 'success');
+                    this.loadMedia();
+                    this.loadDashboard();
+                } catch (error) {
+                    console.error('Error uploading files:', error);
+                    this.showAlert('Ошибка загрузки файлов', 'error');
+                }
+            }
+
+            async deleteMedia(mediaId) {
+                if (!confirm('Вы уверены, что хотите удалить этот медиафайл?')) {
+                    return;
+                }
+                
+                try {
+                    await this.db.deleteMedia(mediaId);
+                    this.showAlert('Медиафайл успешно удален', 'success');
+                    this.loadMedia();
+                    this.loadDashboard();
+                } catch (error) {
+                    console.error('Error deleting media:', error);
+                    this.showAlert('Ошибка удаления медиафайла', 'error');
+                }
+            }
+
+            openMediaSelector() {
+                const modal = document.getElementById('media-selector-modal');
+                modal.classList.remove('hidden');
+                
+                this.loadMediaForSelection();
+            }
+
+            closeMediaSelector() {
+                const modal = document.getElementById('media-selector-modal');
+                modal.classList.add('hidden');
+            }
+
+            async loadMediaForSelection() {
+                try {
+                    const media = await this.db.getMedia();
+                    this.renderMediaSelectorGrid(media);
+                } catch (error) {
+                    console.error('Error loading media for selection:', error);
+                }
+            }
+
+            renderMediaSelectorGrid(media) {
+                const grid = document.getElementById('media-selector-grid');
+                if (!grid) return;
+                
+                if (media.length === 0) {
+                    grid.innerHTML = `
+                        <div class="text-center w-full" style="grid-column: 1 / -1; padding: var(--space-8); color: var(--text-muted);">
+                            <i class="fas fa-images" style="font-size: 3rem; margin-bottom: var(--space-4);"></i>
+                            <p>Медиабиблиотека пуста</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                grid.innerHTML = media.map(item => {
+                    const isSelected = this.selectedMedia.some(m => m.id === item.id);
+                    return `
+                        <div class="media-item ${isSelected ? 'selected' : ''}" data-id="${item.id}">
+                            <img src="${item.url}" alt="${item.name}">
+                        </div>
+                    `;
+                }).join('');
+                
+                // Add selection handlers
+                grid.querySelectorAll('.media-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        item.classList.toggle('selected');
+                    });
+                });
+            }
+
+            confirmMediaSelection() {
+                const grid = document.getElementById('media-selector-grid');
+                const selectedItems = grid.querySelectorAll('.media-item.selected');
+                
+                this.selectedMedia = Array.from(selectedItems).map(item => {
+                    const id = item.dataset.id;
+                    const img = item.querySelector('img');
+                    return {
+                        id,
+                        url: img.src,
+                        name: img.alt
+                    };
+                });
+                
+                this.renderPostMediaGrid();
+                this.closeMediaSelector();
+            }
+
+            renderPostMediaGrid() {
+                const grid = document.getElementById('post-media-grid');
+                if (!grid) return;
+                
+                if (this.selectedMedia.length === 0) {
+                    grid.innerHTML = `
+                        <div class="text-center" style="padding: var(--space-4); color: var(--text-muted);">
+                            <p>Медиа не выбраны</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                grid.innerHTML = this.selectedMedia.map(item => `
+                    <div class="media-item">
+                        <img src="${item.url}" alt="${item.name}">
+                        <div class="media-actions">
+                            <button class="media-action" data-action="remove" data-id="${item.id}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Add remove handlers
+                grid.querySelectorAll('[data-action="remove"]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const mediaId = btn.dataset.id;
+                        this.removeMediaFromPost(mediaId);
+                    });
+                });
+            }
+
+            removeMediaFromPost(mediaId) {
+                this.selectedMedia = this.selectedMedia.filter(m => m.id !== mediaId);
+                this.renderPostMediaGrid();
+            }
+
+            showAlert(message, type = 'info') {
+                // Remove existing alerts
+                const existingAlerts = document.querySelectorAll('.alert');
+                existingAlerts.forEach(alert => alert.remove());
+                
+                // Create new alert
+                const alert = document.createElement('div');
+                alert.className = `alert alert-${type}`;
+                alert.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                `;
+                
+                // Add to page
+                const mainContent = document.querySelector('.admin-main');
+                if (mainContent) {
+                    mainContent.insertBefore(alert, mainContent.firstChild);
+                    
+                    // Auto remove after 5 seconds
+                    setTimeout(() => {
+                        if (alert.parentNode) {
+                            alert.remove();
+                        }
+                    }, 5000);
+                }
+            }
+        }
+
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check authentication first
+            if (!checkAdminAuth()) {
+                return;
+            }
+            
+            try {
+                new AdminPanel();
+                console.log('Admin panel initialized successfully');
+                
+                // Add global error handler
+                window.addEventListener('error', (e) => {
+                    console.error('Global error:', e.error);
+                });
+                
+                window.addEventListener('unhandledrejection', (e) => {
+                    console.error('Unhandled promise rejection:', e.reason);
+                });
+                
+            } catch (error) {
+                console.error('Failed to initialize admin panel:', error);
+                alert('Ошибка инициализации админ-панели. Пожалуйста, обновите страницу.');
+            }
+        });
+    </script>
+</body>
+</html>
